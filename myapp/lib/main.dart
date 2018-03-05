@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(new MyApp());
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         // "hot reload" (press "r" in the console where you ran "flutter run",
         // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
         // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
       ),
       home: new MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -45,7 +46,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
+  void _incrementCounter() async {
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -54,6 +55,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+    var httpclient = createHttpClient();
+    var url = "https://api.github.com/";
+    var resp;
+
+    print("start http operation");
+    resp = await httpclient.read(url);
+    print("resp=$resp");
+    print("end http operation");
   }
 
   @override
@@ -68,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
+        //title: new Text(widget.title),
         title: new Text(widget.title),
       ),
       body: new Center(
@@ -93,9 +103,9 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             new Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+              "counter " + '$_counter',
+              style: Theme.of(context).textTheme.display2,
+            )
           ],
         ),
       ),
