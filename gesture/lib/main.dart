@@ -4,8 +4,8 @@ class MyButton extends StatelessWidget {
   @override
   Widget build(BuildContext contxt) {
     return new GestureDetector(
-      onTap: (){
-        print("mysq button is clicked");
+      onTap: () {
+        print("my button is clicked");
       },
       child: new Container(
         height: 40.0,
@@ -19,6 +19,6 @@ class MyButton extends StatelessWidget {
           child: new Text("社会"),
         ),
       ),
-    )
+    );
   }
 }
