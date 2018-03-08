@@ -22,3 +22,10 @@ class MyButton extends StatelessWidget {
     );
   }
 }
+
+void main() {
+  runApp(new MaterialApp(
+    title: "手势处理",
+    home: new MyButton(),
+  ));
+}
