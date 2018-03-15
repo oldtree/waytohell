@@ -12,12 +12,17 @@ class ContainerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Center(
       child: new Container(
-        width: 100.0,
-        height: 100.0,
-        color: Colors.greenAccent,
+        width: 400.0,
+        height: 400.0,
+        //color: Colors.greenAccent,
         decoration: new BoxDecoration(
-          color: Colors.lightBlue[100],
+          color: const Color(0xfffce5cd),
+          border: new Border.all(
+            color: const Color(0xff6d9eeb),
+            width: 8.0,
+          ),
         ),
+        child: new Text("our home"),
       ),
     );
   }
