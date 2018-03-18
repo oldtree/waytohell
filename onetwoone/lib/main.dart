@@ -22,7 +22,10 @@ class ChartPageState extends State<ChartPage> {
           backgroundColor: Colors.green[100],
         ),
         body: new Center(
-          child: new Text("random data is $dataSet"),
+          child: new CustomPaint(
+            size: new Size(200.0, 100.0),
+            painter: new BarChartPainter(dataSet.toDouble()),
+          ),
         ),
         floatingActionButton: new FloatingActionButton(
           child: new Icon(Icons.refresh),
@@ -31,11 +34,36 @@ class ChartPageState extends State<ChartPage> {
   }
 
   final random = new Random();
-  int dataSet;
+  int dataSet = 50;
 
   void ChangeData() {
     setState(() {
       dataSet = random.nextInt(100);
     });
   }
+}
+
+class BarChartPainter extends CustomPainter {
+  static const barWidth = 10.0;
+  final double barHeight;
+  BarChartPainter(this.barHeight);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = new Paint();
+    paint.color = Colors.blue[400];
+    paint.style = PaintingStyle.fill;
+    canvas.drawRect(
+      new Rect.fromLTWH(
+        (size.width - barWidth) / 2.0,
+        size.height - barHeight,
+        barWidth,
+        barHeight,
+      ),
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(BarChartPainter old) => barHeight != old.barHeight;
 }
