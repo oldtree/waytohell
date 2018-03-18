@@ -8,7 +8,7 @@ class MyNavigationIconView {
     TickerProvider sync,
   })  : _icon = icon,
         _color = color,
-        _item = new BottomNavigationBarItem(
+        item = new BottomNavigationBarItem(
           icon: icon,
           title: title,
         ),
