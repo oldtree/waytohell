@@ -1,13 +1,12 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+
 import 'package:flutter/animation.dart';
-import 'dart:ui' show lerpDouble;
+import 'package:flutter/material.dart';
+
+import 'bar.dart';
 
 void main() {
-  runApp(new MaterialApp(
-    title: "one two one",
-    home: new ChartPage(),
-  ));
+  runApp(new MaterialApp(home: new ChartPage()));
 }
 
 class ChartPage extends StatefulWidget {
@@ -16,32 +15,9 @@ class ChartPage extends StatefulWidget {
 }
 
 class ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("one two one"),
-          backgroundColor: Colors.green[100],
-        ),
-        body: new Center(
-          child: new CustomPaint(
-            size: new Size(200.0, 100.0),
-            painter: new BarChartPainter(tween.animate(animation)),
-          ),
-        ),
-        floatingActionButton: new FloatingActionButton(
-          child: new Icon(Icons.refresh),
-          onPressed: ChangeData,
-        ));
-  }
-
   final random = new Random();
-  int dataSet = 50;
   AnimationController animation;
-  Tween<double> tween;
-  double startHeight;
-  double currentHeight;
-  double endHeight;
+  BarTween tween;
 
   @override
   void initState() {
@@ -50,7 +26,7 @@ class ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    tween = new Tween<double>(begin: 0.0, end: dataSet.toDouble());
+    tween = new BarTween(new Bar(0.0), new Bar(50.0));
     animation.forward();
   }
 
@@ -60,42 +36,29 @@ class ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void ChangeData() {
+  void changeData() {
     setState(() {
-      dataSet = random.nextInt(100);
-      tween = new Tween<double>(
-        begin: tween.evaluate(animation),
-        end: dataSet.toDouble(),
+      tween = new BarTween(
+        tween.evaluate(animation),
+        new Bar(100.0 * random.nextDouble()),
       );
       animation.forward(from: 0.0);
     });
   }
-}
-
-class BarChartPainter extends CustomPainter {
-  static const barWidth = 10.0;
-  final Animation<double> animation;
-  BarChartPainter(Animation<double> animation)
-      : animation = animation,
-        super(repaint: animation);
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final barHeight = animation.value;
-    final paint = new Paint();
-    paint.color = Colors.blue[400];
-    paint.style = PaintingStyle.fill;
-    canvas.drawRect(
-      new Rect.fromLTWH(
-        (size.width - barWidth) / 2.0,
-        size.height - barHeight,
-        barWidth,
-        barHeight,
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Center(
+        child: new CustomPaint(
+          size: new Size(200.0, 100.0),
+          painter: new BarChartPainter(tween.animate(animation)),
+        ),
       ),
-      paint,
+      floatingActionButton: new FloatingActionButton(
+        child: new Icon(Icons.refresh),
+        onPressed: changeData,
+      ),
     );
   }
-
-  @override
-  bool shouldRepaint(BarChartPainter old) => false;
 }
