@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/animation.dart';
+import 'dart:ui' show lerpDouble;
 
 void main() {
   runApp(new MaterialApp(
@@ -13,7 +15,7 @@ class ChartPage extends StatefulWidget {
   ChartPageState createState() => new ChartPageState();
 }
 
-class ChartPageState extends State<ChartPage> {
+class ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -35,10 +37,46 @@ class ChartPageState extends State<ChartPage> {
 
   final random = new Random();
   int dataSet = 50;
+  AnimationController animation;
+  double startHeight;
+  double currentHeight;
+  double endHeight;
+
+  @override
+  void initState() {
+    super.initState();
+    animation = new AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    animation.addListener(() {
+      setState(() {
+        currentHeight = lerpDouble(
+          // Strike one.
+          startHeight,
+          endHeight,
+          animation.value,
+        );
+      });
+    });
+    startHeight = 0.0;
+    currentHeight = 0.0;
+    endHeight = dataSet.toDouble();
+    animation.forward();
+  }
+
+  @override
+  void dispose() {
+    animation.dispose();
+    super.dispose();
+  }
 
   void ChangeData() {
     setState(() {
+      startHeight = currentHeight;
       dataSet = random.nextInt(100);
+      endHeight = dataSet.toDouble();
+      animation.forward(from: 0.0);
     });
   }
 }
