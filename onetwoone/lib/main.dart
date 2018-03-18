@@ -26,7 +26,7 @@ class ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
         body: new Center(
           child: new CustomPaint(
             size: new Size(200.0, 100.0),
-            painter: new BarChartPainter(dataSet.toDouble()),
+            painter: new BarChartPainter(tween.animate(animation)),
           ),
         ),
         floatingActionButton: new FloatingActionButton(
@@ -38,6 +38,7 @@ class ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
   final random = new Random();
   int dataSet = 50;
   AnimationController animation;
+  Tween<double> tween;
   double startHeight;
   double currentHeight;
   double endHeight;
@@ -49,19 +50,7 @@ class ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    animation.addListener(() {
-      setState(() {
-        currentHeight = lerpDouble(
-          // Strike one.
-          startHeight,
-          endHeight,
-          animation.value,
-        );
-      });
-    });
-    startHeight = 0.0;
-    currentHeight = 0.0;
-    endHeight = dataSet.toDouble();
+    tween = new Tween<double>(begin: 0.0, end: dataSet.toDouble());
     animation.forward();
   }
 
@@ -73,9 +62,11 @@ class ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
 
   void ChangeData() {
     setState(() {
-      startHeight = currentHeight;
       dataSet = random.nextInt(100);
-      endHeight = dataSet.toDouble();
+      tween = new Tween<double>(
+        begin: tween.evaluate(animation),
+        end: dataSet.toDouble(),
+      );
       animation.forward(from: 0.0);
     });
   }
@@ -83,11 +74,14 @@ class ChartPageState extends State<ChartPage> with TickerProviderStateMixin {
 
 class BarChartPainter extends CustomPainter {
   static const barWidth = 10.0;
-  final double barHeight;
-  BarChartPainter(this.barHeight);
+  final Animation<double> animation;
+  BarChartPainter(Animation<double> animation)
+      : animation = animation,
+        super(repaint: animation);
 
   @override
   void paint(Canvas canvas, Size size) {
+    final barHeight = animation.value;
     final paint = new Paint();
     paint.color = Colors.blue[400];
     paint.style = PaintingStyle.fill;
@@ -103,5 +97,5 @@ class BarChartPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(BarChartPainter old) => barHeight != old.barHeight;
+  bool shouldRepaint(BarChartPainter old) => false;
 }
