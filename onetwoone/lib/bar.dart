@@ -21,7 +21,7 @@ class BarTween extends Tween<Bar> {
 }
 
 class BarChartPainter extends CustomPainter {
-  static const barWidth = 10.0;
+  static const barWidth = 40.0;
 
   BarChartPainter(Animation<Bar> animation)
       : animation = animation,
