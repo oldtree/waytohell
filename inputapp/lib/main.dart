@@ -86,9 +86,9 @@ class app extends State<InputApp> {
           new RaisedButton(
             child: new Text("提交"),
             onPressed: () {
-              print(namecontroller.text);
-              print(passwordcontoller.text);
-              ShowMessage(inputvalue);
+              inputvalue = namecontroller.text;
+              passwordValue = passwordcontoller.text;
+              ShowMessage("name : $inputvalue \n password : $passwordValue \n");
             },
           ),
         ],
