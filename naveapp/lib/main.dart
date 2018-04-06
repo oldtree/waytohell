@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() => runApp(new MyApp());
 
@@ -31,26 +32,27 @@ class HomePage extends StatefulWidget {
 }
 
 class DefaultHomePage extends State<HomePage>{
-  void OpenNewPage(){
-    setState(() {
-          Navigator.of(context).push(new  MaterialPageRoute<Null>(
-            builder: (BuildContext context){
-              return  new Scaffold(
-                appBar:  new AppBar(
-                  title: new Text("new page"),
-                ),
-                body: new Center(
-                  child: new Text("click to return main page"),
-                ),
-                floatingActionButton: new FloatingActionButton(
-                  onPressed: (){
-                    Navigator.of(context).pop();
-                  },
-                  child: new Icon(Icons.replay),
-                ),
-              );
-            }
-          ));
+  Future<Null> OpenNewPage() async {
+    int status = await Navigator.of(context).push(new  MaterialPageRoute<int>(
+      builder: (BuildContext context){
+        return  new Scaffold(
+          appBar:  new AppBar(
+            title: new Text("new page"),
+          ),
+          body: new Center(
+            child: new Text("click to return main page"),
+          ),
+          floatingActionButton: new FloatingActionButton(
+            onPressed: (){
+              Navigator.of(context).pop(1);
+            },
+            child: new Icon(Icons.replay),
+          ),
+        );
+      }
+    ));
+    setState((){
+      print(status);
     });
   }
 
