@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:wechat/function/auth/login.dart';
+import 'package:wechat/models/auth.dart';
+
+
 
 void main() {
-  runApp(new WechatApp(Islogin: false));
+  LoginInfo u = new LoginInfo();
+  runApp(new WechatApp(user:u));
 }
 
 class WechatApp extends StatefulWidget {
-  WechatApp({this.Islogin});
-  final bool Islogin;
+  LoginInfo user;
+  WechatApp({this.user});
+  static bool Islogin;
   @override
   State<StatefulWidget> createState() {
       // TODO: implement createState
@@ -30,7 +36,14 @@ class Wechat extends State<WechatApp>{
           appBar: new AppBar(
             title: new Text("copy wechat"),
           ),
+          body: new Container(
+            child: new LoginWidget(loginuser: widget.user)
+          ),
         ),
+        routes: <String,WidgetBuilder>{
+          '/login':(BuildContext context){return new LoginWidget(loginuser: widget.user);},
+          '/about':(BuildContext context){return new AboutDialog();}
+        },
       );
   }
 }
