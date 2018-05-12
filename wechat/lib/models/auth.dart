@@ -9,3 +9,15 @@ class LoginInfo {
     return this.username + this.password;
   }
 }
+
+class GlobalState{
+  GlobalState({this.user,this.IsLogin,this.AccessToken,this.LastLoginTime});
+  LoginInfo user;
+  bool IsLogin;
+  String AccessToken; 
+  DateTime LastLoginTime;
+}
+
+GlobalState gs;
+
+

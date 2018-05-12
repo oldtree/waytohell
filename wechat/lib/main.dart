@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wechat/function/auth/login.dart';
 import 'package:wechat/models/auth.dart';
-
+import 'package:wechat/function/entrypoint.dart';
+import 'package:wechat/function/chat/chat.dart';
 
 
 void main() {
@@ -37,12 +38,14 @@ class Wechat extends State<WechatApp>{
             title: new Text("copy wechat"),
           ),
           body: new Container(
-            child: new LoginWidget(loginuser: widget.user)
+            child: GetLoginScaffold(widget.user)
           ),
         ),
         routes: <String,WidgetBuilder>{
-          '/login':(BuildContext context){return new LoginWidget(loginuser: widget.user);},
-          '/about':(BuildContext context){return new AboutDialog();}
+          '/login':(BuildContext context){return GetLoginScaffold(widget.user);},
+          '/about':(BuildContext context){return new AboutDialog();},
+          '/entrypoint':(BuildContext context){return GetMainEntryScaffold(true);},
+          '/wechat':(BuildContext context){return new Chat();}
         },
       );
   }

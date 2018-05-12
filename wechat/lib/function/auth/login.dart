@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:wechat/models/auth.dart';
 
 
-Widget GetLoginForm(){
+Widget GetLoginScaffold(LoginInfo user){
   return new Scaffold(
     appBar: new AppBar(
       title: new Text("login"),
     ),
-    body: new LoginWidget(),
+    body: new LoginScaffold(loginuser: user),
   );
 }
 
-class LoginWidget extends StatefulWidget {
+class LoginScaffold extends StatefulWidget {
   LoginInfo loginuser;
-  LoginWidget({this.loginuser});
+  LoginScaffold({this.loginuser});
   @override
     State<StatefulWidget> createState() {
       // TODO: implement createState
@@ -22,7 +22,7 @@ class LoginWidget extends StatefulWidget {
   
 }
 
-class LoginAction extends State<LoginWidget> {
+class LoginAction extends State<LoginScaffold> {
   final GlobalKey<FormState> _formkey = new GlobalKey<FormState>(); 
   TextEditingController nameController;
   TextEditingController passwordController;
@@ -85,7 +85,7 @@ class LoginAction extends State<LoginWidget> {
                 onPressed: () {
                   widget.loginuser.username = nameController.text;
                   widget.loginuser.password = passwordController.text;
-                  Navigator.pushNamed(context, "/about");
+                  Navigator.pushNamed(context, "/entrypoint");
                 },
               ),
               new FlatButton(
